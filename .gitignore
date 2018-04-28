@@ -1,0 +1,17 @@
+/composer-test/*
+/composer/*
+/vendor/*
+/xiaomi_mall/*
+/yii2-basic-test/*
+/laravel/*
+*.log
+*.jpeg
+*.png
+*.doc
+*.docx
+*.xls
+*.xlsx
+/php56/src/*
+/php56/exts/*
+/php70/src/*
+/php72/src/*

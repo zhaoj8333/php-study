@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<conf>
+    <item name="user">bob</item>
+    <item name="pass">pass</item>
+    <item name="host">127.0.0.1</item>
+</conf>

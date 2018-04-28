@@ -1,0 +1,16 @@
+http requests:
+
+    1. actions a user or a tool takes when attempting to fetch content from a web server
+    2. info:
+        host
+        brower
+        other
+    3. process:
+        req -> router -> gateway -> dns -> web server -> web app
+
+http response:
+    1. fetch and format data
+    2. web server packages up the data into multiple packets, send it to the user along the same route
+    3. if data is too large, the packet is sent in multiple packets, check errors
+    3. browers rendering html
+

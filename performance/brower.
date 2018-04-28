@@ -1,0 +1,23 @@
+web pages:
+
+    1. YSlow v2
+        css:
+            place the css styles at the top of the html document
+            avoid certain css expressions
+            minify the css files
+        image:
+            use desired image sizes instead of resizing within html using with and height attributes -> reduce the reponse size
+            create sprites when possible -> reduce the number of images the browser required
+        javascript:
+            place javascript at the bottom of the html
+            minify javascript
+            make javascript external
+
+        compress several files into single file
+
+
+server optimization:
+    1. YSlow v2
+        whether the server utilize Gzip/bzip2 compression
+        whether the DNS lookups are reduced
+        whether the ETags are implemented

@@ -1,0 +1,4 @@
+<?php
+
+$hhvm = "hhvm";
+
