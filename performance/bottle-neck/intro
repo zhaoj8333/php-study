@@ -1,0 +1,4 @@
+bottlenecks should be key concerns when coding
+
+web apps tend to have bottlenecks within the db layer,
+web services layer , io functions

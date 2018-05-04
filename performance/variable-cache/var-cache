@@ -1,0 +1,3 @@
+fetching data without cache:
+
+    load php script -> open conn to db -> run sql -> fetch results from query -> close db conn -> display to user

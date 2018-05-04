@@ -1,0 +1,8 @@
+patterns of all web-servers:
+    1. request listener: pick up an inbound network connection, read the request from the socket
+    2. request parsing: take the request and parse it into a data structure
+    3. input filter: url rewritting
+    4. uri mapping: uri -> physical directories and files
+    5. request handling:
+    6. output filter: -> HTML, compression ...
+    7. output transmission:
