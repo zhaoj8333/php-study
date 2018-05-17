@@ -8,7 +8,7 @@
 // mysql_pconnect, or configure MySQL so that connections are terminated the moment they stop
 // doing anything, using a short connection timeout value.
 
-require 'TableQuery.php';
+require 'Model.php';
 
 class DbTest
 {
@@ -16,31 +16,20 @@ class DbTest
 
     function __construct()
     {
-        $srvObj = new TableQuery('db1');
+        $srvObj = new Model('db1');
+        // var_dump($srvObj);die;
         // $this->query = $tableObj->mysqli;
-
+        $id = $_POST['id'];
+        // $id = mysql_real_escape_string($id);
+// var_dump($_POST['id']);
+// var_dump(stripslashes($_POST['id']));
+// var_dump($id);die;
         $res = $srvObj
             ->table('tos_event_detail')
-            ->field(
-                [
-                    'id',
-                    'eid',
-                    'etype_id',
-                    'etype',
-                    'data',
-                    'htype',
-                    'uname'
-                ]
-            )
-            ->orderBy('id')
+            ->where('id = ' . $id)
+            ->field('')
             ->select();
-
-        $result = $srvObj
-            ->table('tos_event')
-            ->field('*')
-            ->orderBy('id')
-            ->select();
-// var_dump($result);die;
+var_dump($res);
         var_dump($srvObj->getLastQuery());
     }
 }

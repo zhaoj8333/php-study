@@ -9,8 +9,9 @@ class SqlString
      *
      * @return [string]      [被反引号括起来的字符串]
      */
-    public static function backquoteSqlString($str)
+    public static function backquoteSqlString(&$str)
     {
+        $str = trim($str);
         $quoted = '';
         if (0 !== stripos($str, '`')) {
             $quoted = '`' . $str;

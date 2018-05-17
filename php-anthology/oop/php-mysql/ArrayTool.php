@@ -12,7 +12,7 @@ class ArrayTool
      *
      * @return [array]        [返回重新索引的数组]
      */
-    public static function indexBy(&$array = [], $index = '', $checkUnique = true)
+    public static function indexBy(&$array = [], $index = '', $checkUnique = false)
     {
         $return = [];
 

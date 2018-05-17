@@ -1,16 +1,17 @@
 <?php
 
-require 'Query.php';
+require 'BaseQuery.php';
 require 'ArrayTool.php';
 require 'SqlString.php';
 
 
-class TableQuery extends Query
+class Model extends BaseQuery
 {
 
     public $table;
 
     public $fields = "*";
+    public $where = '';
     public $orderBy;
     public $order;
     public $limit = "1, 10";
@@ -33,9 +34,13 @@ class TableQuery extends Query
             return $table;
         }
         // 表详细信息
-        $table['status'] = $this->query("SHOW TABLE STATUS WHERE Name = '{$tableName}'");
+        $table['status'] = $this->query(
+            "SHOW TABLE STATUS WHERE Name = '{$tableName}'"
+        );
         // 表列信息
-        $table['columns'] = ArrayTool::indexBy($this->query("SHOW FULL COLUMNS FROM {$tableName}"), 'Field');
+        $table['columns'] = ArrayTool::indexBy(
+            $this->query("SHOW FULL COLUMNS FROM {$tableName}"), 'Field'
+        );
         // 表索引
         $table['index'] = $this->query("SHOW INDEX FROM {$tableName}");
         // 表创建语句
@@ -106,15 +111,15 @@ class TableQuery extends Query
 
         $fieldsStr = "";
         if (is_array($fields)) {
-            foreach ($fields as $key => $field) {
-                $fieldsStr .= SqlString::backquoteSqlString($field) . ", ";
-            }
-            $this->fields = substr($fieldsStr, 0, strlen($fieldsStr) - 2);
+            $fieldsArr = &$fields;
         } elseif (is_string($fields)) {
-            $fieldsArr = explode($fields, ',');
-            var_dump($fieldsArr);
+            $fieldsArr = explode(',', trim($fields));
         }
-die;
+        foreach ($fieldsArr as $key => $field) {
+            $fieldsStr .= SqlString::backquoteSqlString($field) . ', ';
+        }
+        $this->fields = substr($fieldsStr, 0, strlen($fieldsStr) - 2);
+
         return $this;
     }
 
@@ -123,9 +128,15 @@ die;
         $sql = "
             SELECT
                 {$this->fields}
-            FROM {$this->table}
-            ORDER BY {$this->orderBy} {$this->order}
-            LIMIT {$this->limit}
+            FROM
+                {$this->table}
+            WHERE
+                1 = 1 AND
+                {$this->where}
+            -- ORDER BY
+            --     {$this->orderBy} {$this->order}
+            -- LIMIT
+            --     {$this->limit}
         ";
         return $this->query($sql);
     }
@@ -141,6 +152,15 @@ die;
     public function limit($limit)
     {
         $this->limit = $limit;
+
+        return $this;
+    }
+
+    public function where($where)
+    {
+        $this->where = $where;
+
+        return $this;
     }
 
 
