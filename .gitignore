@@ -15,3 +15,4 @@
 /php56/exts/*
 /php70/src/*
 /php72/src/*
+*/tests/*

@@ -1,0 +1,1629 @@
+swagger: '2.0'
+info:
+  description: '本文档包含任务调度相关接口 '
+  version: 1.0.0
+  title: openapi task模块
+  license:
+    name: tos任务行程接口
+    url: 'http://'
+host: api.huoyunren.com
+schemes:
+  - http
+produces:
+  - application/json
+paths:
+  /v1/tos/task/index:
+    get:
+      tags:
+        - tos
+        - tos手机管车 任务列表查询
+      summary: 通过任务状态taskStatus查询任务列表
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: g7s_user_orgcode
+          in: query
+          description: orgcode
+          required: true
+          type: string
+
+        - name: pageNo
+          in: query
+          description: 分页页码
+          required: false
+          type: string
+
+        - name: pageSize
+          in: query
+          description: 分页大小
+          required: false
+          type: string
+
+        - name: taskStatus
+          in: query
+          description: 任务状态
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/tasks'
+        '403':
+          description: Forbidden!
+        '500':
+          description: server error
+  /v1/tos/task/task:
+    get:
+      tags:
+        - tos
+        - tos手机管车 任务详情查询
+      summary: 通过任务id查询任务详情
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: g7s_user_orgcode
+          in: query
+          description: orgcode
+          required: true
+          type: string
+        - name: taskId
+          in: query
+          description: 任务id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/task'
+        '403':
+          description: Forbidden!
+        '500':
+          description: server error
+  /v1/tos/task/saveTaskRemark:
+    post:
+      tags:
+        - tos
+        - 保存任务备注信息
+      summary: 通过任务taskId 保存任务备注信息
+      comsumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: g7s_use_orgcode
+          in: query
+          description: orgcode
+          required: true
+          type: string
+        - name: taskId
+          in: query
+          description: 任务id
+          required: true
+          type: string
+        - name: remark
+          in: formData
+          description: 描述（自多节字符长度不得多于200）
+          type: string
+          required: true
+      responses:
+      '200':
+        description: OK
+        schema:
+          $ref: '#/definitions/tasks'
+      '403':
+        description: Forbidden!
+      '500':
+        description: server error
+  /v1/tos/task/unusualEvents:
+    get:
+      tags:
+        - tos
+        - tos手机管车 异常事件列表
+      summary: 通过任务id查询 异常事件列表
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: g7s_user_orgcode
+          in: query
+          description: orgcode
+          required: true
+          type: string
+        - name: taskId
+          in: query
+          description: 任务id
+          required: true
+          type: string
+        - name: sTime
+          in: query
+          description: 开始时间
+          required: false
+          type: string
+        - name: eTime
+          in: query
+          description: 结束时间
+          required: false
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/events'
+        '403':
+          description: Forbidden!
+        '500':
+          description: server error
+
+  /v1/tos/task/unusualEvent:
+    get:
+      tags:
+        - tos
+        - tos手机管车 异常事件详情
+      summary: 通过事件id查询 异常事件详情
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: g7s_user_orgcode
+          in: query
+          description: orgcode
+          required: true
+          type: string
+        - name: eventId
+          in: query
+          description: 事件id
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/event'
+        '403':
+          description: Forbidden!
+        '500':
+          description: server error
+
+
+
+  /v1/tos/itinerary/getitinerarylist:
+    post:
+      tags:
+        - tos
+        - 行程单列表查询接口
+      description: 通过传入参数查询任务行程单列表
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getItineraryList'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getItineraryListResponse'
+        '404':
+          description: Not found Exception
+  /v1/tos/itinerary/getitineraryinfobytask:
+    post:
+      tags:
+        - tos
+        - 任务详情查询接口(单条)
+      description: 通过传入参数查询任务行程单详情
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getItineraryInfoByTask'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getItineraryInfoByTaskResponse'
+        '404':
+          description: Not found Exception
+  /v1/tos/itinerary/getefficiencybytask:
+    post:
+      tags:
+        - tos
+        - 任务时效查询接口
+      description: 任务时效查询接口
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getEfficiencyByTask'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getEfficiencyByTaskResponse'
+        '404':
+          description: Not found Exception
+  /v1/tos/itinerary/getefficiencys:
+    post:
+      tags:
+        - tos
+        - 任务时效查询接口(增量)
+      description: 任务时效查询接口(增量)，用于数据同步
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getEfficiencys'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getEfficiencysResponse'
+        '404':
+          description: Not found Exception
+  /v1/tos/itinerary/getactionbytask:
+    post:
+      tags:
+        - tos
+        - 任务事件查询接口（单条）
+      description: 通过任务查询任务的事件数据
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getActionByTask'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getActionByTaskResponse'
+        '404':
+          description: Not found Exception
+  /v1/tos/itinerary/getactions:
+    post:
+      tags:
+        - tos
+        - 任务事件查询接口(增量)
+      description: 通过时间查询任务事件，用于事件数据的同步
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getActions'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getActionsResponse'
+        '404':
+          description: Not found Exception
+  /v1/tos/itinerary/getactioninfo:
+    post:
+      tags:
+        - tos
+        - 单个事件详情查询接口
+      description: 单个事件详情查询接口
+      consumes:
+        - application/json
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: 请求体
+          required: true
+          schema:
+            $ref: '#/definitions/getActionInfo'
+      responses:
+        '200':
+          description: 请求成功
+          schema:
+            $ref: '#/definitions/getActionInfoResponse'
+        '404':
+          description: Not found Exception
+definitions:
+  tasks:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 任务id
+      starttime:
+        type: string
+        description: 计划开始时间
+      startpoint:
+        type: string
+        description: 起点站点
+      endpoint:
+        type: string
+        description: 结束站点
+      endtime:
+        type: string
+        description: 计划结束时间
+      plandistance:
+        type: string
+        description: 计划运行里程
+      postlinename:
+        type: string
+        description: 任务名称
+      carnum:
+        type: string
+        description: 车牌号
+      gstarttime:
+        type: string
+        description: 实际开始时间
+      garrivetime:
+        type: string
+        description: 实际结束时间
+      hang_carnum:
+        type: string
+        description: 挂车车牌号
+      inssueclasslinemode:
+        type: string
+        description: 计划标识： 0表示循环发车任务 ，大于0表示临时任务
+      gruntime:
+        type: string
+        description: 总体实际已运行时间
+      runtime:
+        type: string
+        description: 总体计划运行时间
+      truckid:
+        type: string
+        description: 车辆id
+      workfinished:
+        type: number
+        description: 进度
+      whole_depart:
+        type: integer
+        description: 是否是全天发车：1 是， 0否
+      is_shift_before:
+        type: integer
+        description: 当前是否偏移： 1 偏移， 0不偏移
+      is_shift_over:
+        type: integer
+        description: 任务结束后，线路是否有偏移：1偏移2未偏移，任务未结束为null，
+      deliverstatus:
+        type: integer
+        description: 任务状态： 2、已发车；3、已完成
+      classline_uniqueid:
+        type: string
+        description: 班线唯一id
+
+      stopped_sites:
+        type: array
+        description: 停留站点信息
+        items:
+          properties:
+            id:
+              type: string
+              description: id
+            siteid:
+              type: string
+              description: 站点id
+            sitename:
+              type: string
+              description: 站定名称
+            order:
+              type: number
+              description: 排序：整个stopped_sites站点信息已做了以该字段顺序排序
+            pintime:
+              type: string
+              description: 计划进站时间
+            pouttime:
+              type: string
+              description: 计划出站时间
+            gintime:
+              type: string
+              description: 实际进站时间
+            goutime:
+              type: string
+              description: 实际出站时间
+            szflag:
+              type: number
+              description: 区域类型:0、途径点;1、开始站点；2、结束站点
+            runtime:
+              type: string
+              description: 站点计划运行时间，秒
+            gruntime:
+              type: string
+              description: 站点实际运行时间，秒
+            workfinished:
+              type: number
+              description: 到下一站的进度（终点不做返回）
+            arrivaldate:
+              type: string
+              description: 预计到达下一站的时间（终点不做返回）
+
+  task:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 任务id
+      deliverstatus:
+        type: string
+        description: 状态 2、已发车；3、已完成
+      inssueclasslinemode:
+        type: string
+        description: 计划标识： 0表示循环发车任务 ，大于0表示临时任务
+      classline_uniqueid:
+        type: string
+        description: 任务uniqueid
+      postlinename:
+        type: string
+        description: 任务名称
+      carnum:
+        type: string
+        description: 车牌号
+      hang_carnum:
+        type: string
+        description: 挂车车牌
+      pathid:
+        type: string
+        description: 标准路线
+      custome:
+        type: string
+        description: 客户名称
+      carriage:
+        type: string
+        description: 任务运费
+      delaystatus:
+        type: number
+        description: 1起延误2到达延误3起到都延误
+      eventstatus:
+        type: number
+        description: 监控状态，1.待发车正常，2.待发车晚发预警，3.待发车晚发报警，4.待发车预留，5.在途正常，6.在途晚发，7.在途晚到预警，8，在途晚到报警 9.在途预留，10.已结束正常，11.已结束晚到，12已结束超时未发，13.已结束超时未到
+      alarm_status:
+        type: number
+        description: 1未开始监控，2开始，3结束监控，如果结束监控了则结束绑定事件
+      task_status:
+        type: number
+        description: 任务当前在途的状态 1正常，2异常，如果deliverstatus =3 and task_status=2 则为异常结束 异常结束则继续监控任务的异常事件,alarm_status 如果为3则强制结束监控
+      remark:
+        type: string
+        description: 备注
+
+      drivers:
+        type: array
+        description: 司机信息
+        items:
+          properties:
+            driverid:
+              type: string
+              description: 司机1 id（driverid2）
+            drivername:
+              type: string
+              description: 司机1 姓名（drivername2）
+            driverphone:
+              type: string
+              description: 司机1 电话 （driverphone2）
+      tags:
+        type: array
+        description: 备注
+        items:
+          properties:
+            1:
+              type: string
+              description: tag 名称
+      stdline:
+        type: object
+        properties:
+          lineid:
+            type: string
+            description: 标准路线id
+          linename:
+            type: string
+            description: 标准路线名称
+          shiftcount:
+            type: number
+            description: 偏移次数
+
+      stopped_sites:
+              type: array
+              description: 停留站点信息
+              items:
+                properties:
+
+                  id:
+                    type: string
+                    description: id
+                  siteid:
+                    type: string
+                    description: 站点id
+                  sitename:
+                    type: string
+                    description: 站点名称
+                  lng:
+                    type: string
+                    description: 经度
+                  lat:
+                    type: string
+                    description: 纬度
+                  order:
+                    type: string
+                    description: 排序：整个stopped_sites站点信息已做了以该字段顺序排序
+                  pintime:
+                    type: string
+                    description: 计划进站时间
+                  pouttime:
+                    type: string
+                    description: 计划出站时间
+                  gintime:
+                    type: string
+                    description: 实际进站时间
+                  goutime:
+                    type: string
+                    description: 实际出站时间
+                  szflag:
+                    type: string
+                    description: 区域类型:0、途径点;1、开始站点；2、结束站点
+                  realtomile:
+                    type: string
+                    description: 实际运行里程 km
+                  runtime:
+                    type: string
+                    description: 站点计划运行时间，秒
+                  gruntime:
+                    type: string
+                    description: 站点实际运行时间，秒
+                  tomile:
+                    type: string
+                    description: 计划运行里程 km
+                  workfinished:
+                    type: string
+                    description: 已行驶进度
+                  arrivaldate:
+                    type: string
+                    description: 预计到达下一站时间
+                  workdistance:
+                    type: string
+                    description: 剩余里程
+                  olddistance:
+                    type: string
+                    description: 已经运行里程
+                  plandistance:
+                    type: string
+                    description: 计划总里程
+
+  events:
+    type: object
+    properties:
+      id:
+          type: number
+          description: 事件id
+      elat:
+          type: string
+          description: 事件结束的纬度
+      elng:
+          type: string
+          description: 事件结束的经度
+      event_type:
+          type: string
+          description: 事件类型，:事件类型：offline：离线，problem：异常停车，slow：缓行，late_leave：晚发预警，late_arrive：晚到预警，path_offset：线路偏移，late_out：晚发报警
+      lat:
+          type: string
+          description: 开始纬度
+      lng:
+          type: string
+          description: 结束经度
+      stime:
+          type: string
+          description: 事件开始时间
+      etime:
+          type: string
+          description: 事件结束时间
+      status:
+          type: number
+          description: 事件类型：0:事件开始   1:事件结束
+
+  event:
+    type: object
+    properties:
+      id:
+        type: string
+        description: 事件id
+      elat:
+        type: string
+        description: 事件结束的纬度
+      elng:
+        type: string
+        description: 事件结束的经度
+      event_type:
+        type: string
+        description: 事件类型：offline：离线，problem：异常停车，slow：缓行，late_leave：晚发预警，late_arrive：晚到预警，path_offset：线路偏移，late_out：晚发报警
+      carnum:
+        type: string
+        description: 车牌号
+      lat:
+        type: string
+        description: 开始纬度
+      lng:
+        type: string
+        description: 结束经度
+      stime:
+        type: string
+        description: 事件开始时间
+      etime:
+        type: string
+        description: 事件结束时间
+      status:
+        type: number
+        description: 事件类型：0:事件开始   1:事件结束   2:单次事件
+      photos:
+        type: array
+        description: 停留站点信息
+        items:
+          properties:
+            photoid:
+              type: string
+              description: 图片id
+            phototype:
+              type: string
+              description: 图片类型：类型,0 tos自动拍照，1dsp 自动拍照，2截图，3手动拍照，4司小宝上传,5自动截图
+            photourl:
+              type: string
+              description: 图片地址
+            gpsno:
+              type: string
+              description: gpsno
+            channel:
+              type: string
+              description:  通道编号，1-对驾驶室，2-对路况, 其他-未知（null或其他值）
+      weather:
+        type: string
+        description: 事发天气
+
+  getItineraryList:
+    type: object
+    properties:
+      starttimeGe:
+        type: string
+        description: 大于该计划开始时间，datetime.
+      starttimeLt:
+        type: string
+        description: 小于该计划开始时间，datetime.
+      updatetimeGe:
+        type: string
+        description: 大于或等于该更新时间，datetime.
+      updatetimeLt:
+        type: string
+        description: 小于该更新时间，datetime.
+      postlinecode:
+        type: string
+        description: 班线编码
+      postlinenameLk:
+        type: string
+        description: 任务名称或者班线名称。左匹配
+      startpoint:
+        type: string
+        description: 开始站点名称。全量匹配
+      endpoint:
+        type: string
+        description: 到达站点名称。全量匹配
+      startpointcode:
+        type: string
+        description: 开始站点编码。全量匹配
+      endpointcode:
+        type: string
+        description: 到达站点编码。全量匹配
+      startpointLk:
+        type: string
+        description: 开始站点名称。左匹配
+      endpointLk:
+        type: string
+        description: 到达站点名称。左匹配
+      carnumLk:
+        type: string
+        description: 车牌号。左匹配
+      carnums:
+        type: string
+        description: '车牌号集合，多个车牌号用,隔开'
+      orgcodeLk:
+        type: string
+        description: 所属机构号，左匹配
+      drivernameLk:
+        type: string
+        description: 驾驶员姓名，左匹配
+      isaudited:
+        type: integer
+        description: '审核状态 可选 0未审,1已审,2申诉'
+      taskidIN:
+        type: string
+        description: 任务id查询多个逗号隔开，最大100
+      taskcodeIN:
+        type: string
+        description: 任务code查询多个逗号隔开，最大100
+      LkcustomeLk:
+        type: string
+        description: 客户名称，全模糊
+      getChild:
+        type: integer
+        description: 获取分段信息(传值为1时获取) 默认不获取
+      pageNo:
+        type: integer
+        description: 页码，默认为1
+      pageSize:
+        type: integer
+        description: 每页数据量，最大为100
+  getItineraryListResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: object
+        properties:
+          pageNo:
+            type: integer
+            description: 页码
+          pageSize:
+            type: integer
+            description: 单页数据量
+          total:
+            type: string
+            description: 数量总量
+          result:
+            type: array
+            description: 单页数据
+            items:
+              properties:
+                id:
+                  type: string
+                  description: 任务id 32位
+                taskcode:
+                  type: string
+                  description: 任务号
+                drivername:
+                  type: string
+                  description: 任务司机
+                postlinename:
+                  type: string
+                  description: 任务线路
+                endpoint:
+                  type: string
+                  description: 到达地
+                endpointcode:
+                  type: string
+                  description: 到达地编码
+                arrivedelay:
+                  type: integer
+                  description: 到达延误 秒
+                startdelay:
+                  type: integer
+                  description: 发车延误 秒
+                driverphone:
+                  type: string
+                  description: 司机电话
+                startpoint:
+                  type: string
+                  description: 始发地
+                startpointcode:
+                  type: string
+                  description: 始发地编码
+                isexception:
+                  type: integer
+                  description: 完成异常
+                garrivetime:
+                  type: string
+                  description: 实际到达时间 datetime
+                gstarttime:
+                  type: string
+                  description: 实际开始时间 datetime
+                totaldistance:
+                  type: string
+                  description: 实际总里程 km
+                gruntime:
+                  type: integer
+                  description: 实际运行时间（秒）
+                auditor:
+                  type: string
+                  description: 审核人
+                audittime:
+                  type: string
+                  description: 审核时间 datetime
+                custome:
+                  type: string
+                  description: 客户名称
+                responsibility:
+                  type: integer
+                  description: 延误有责
+                events:
+                  type: integer
+                  description: 异常事件数目
+                orgcode:
+                  type: string
+                  description: 所属机构号
+                isaudited:
+                  type: integer
+                  description: 是否审核
+                responsibletime:
+                  type: integer
+                  description: 有责时长（秒）
+                postlinetype:
+                  type: string
+                  description: 线路类型
+                postlinecode:
+                  type: string
+                  description: 线路编码
+                fineAmount:
+                  type: string
+                  description: 罚款金额 元
+                child:
+                  type: array
+                  description: 行程单分段信息
+                  items:
+                    properties:
+                      id:
+                        type: string
+                        description: 分段数据id
+                      postlinename:
+                        type: string
+                        description: 任务线路
+                      postlinecode:
+                        type: string
+                        description: 线路编码
+                      starttime:
+                        type: string
+                        description: 计划发车时间 datetime
+                      gstarttime:
+                        type: string
+                        description: 实际开始时间 datetime
+                      startdelay:
+                        type: integer
+                        description: 发车延误 秒
+                      endtime:
+                        type: string
+                        description: 计划到达时间 datetime
+                      garrivetime:
+                        type: string
+                        description: 实际到达时间 datetime
+                      arrivedelay:
+                        type: integer
+                        description: 到达延误 秒
+                      plandistance:
+                        type: string
+                        description: 计划总里程 km
+                      totaldistance:
+                        type: string
+                        description: 实际总里程 km
+                      runtime:
+                        type: integer
+                        description: 运行时间 秒
+                      gruntime:
+                        type: integer
+                        description: 实际运行时间 秒
+                      rundelay:
+                        type: integer
+                        description: 运行延误 秒
+                      events:
+                        type: integer
+                        description: 异常事件数目
+                      responsibility:
+                        type: integer
+                        description: 延误有责 0无；1有
+                      responsibletime:
+                        type: integer
+                        description: 有责时长 秒
+                endtime:
+                  type: string
+                  description: 计划到达时间 datetime
+                starttime:
+                  type: string
+                  description: 计划发车时间 datetime
+                plandistance:
+                  type: string
+                  description: 计划总里程 km
+                gpsno:
+                  type: string
+                  description: 设备号
+                carnum:
+                  type: string
+                  description: 车牌号
+                truckid:
+                  type: string
+                  description: 车辆id
+                rundelay:
+                  type: integer
+                  description: 运行延误 秒
+                runtime:
+                  type: integer
+                  description: 运行时间 秒
+                carriagetype:
+                  type: string
+                  description: 运费类型
+                in_haven_time:
+                  type: string
+                  description: 进始发站时间 datetime
+                orgroot:
+                  type: string
+                  description: 顶级机构号
+  getItineraryInfoByTask:
+    type: object
+    properties:
+      taskid:
+        type: string
+        description: '任务id,与任务编码必填其一'
+      taskcode:
+        type: string
+        description: 任务编号，与任务id必填其一
+      getChild:
+        type: integer
+        description: 获取分段信息(传值为1时获取) 默认不获取
+  getItineraryInfoByTaskResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: object
+        properties:
+          id:
+            type: string
+            description: 任务id
+          taskcode:
+            type: string
+            description: 任务号
+          drivername:
+            type: string
+            description: 任务司机
+          postlinename:
+            type: string
+            description: 任务线路
+          endpoint:
+            type: string
+            description: 到达地
+          endpointcode:
+            type: string
+            description: 到达地编码
+          arrivedelay:
+            type: integer
+            description: 到达延误 秒
+          startdelay:
+            type: integer
+            description: 发车延误 秒
+          driverphone:
+            type: string
+            description: 司机电话
+          startpoint:
+            type: string
+            description: 始发地
+          startpointcode:
+            type: string
+            description: 始发地编码
+          isexception:
+            type: integer
+            description: 完成异常
+          garrivetime:
+            type: string
+            description: 实际到达时间 datetime
+          gstarttime:
+            type: string
+            description: 实际开始时间 datetime
+          totaldistance:
+            type: string
+            description: 实际总里程 km
+          gruntime:
+            type: integer
+            description: 实际运行时间（秒）
+          auditor:
+            type: string
+            description: 审核人
+          audittime:
+            type: string
+            description: 审核时间 datetime
+          custome:
+            type: string
+            description: 客户名称
+          responsibility:
+            type: integer
+            description: 延误有责
+          events:
+            type: integer
+            description: 异常事件数目
+          orgcode:
+            type: string
+            description: 所属机构号
+          isaudited:
+            type: integer
+            description: 是否审核
+          responsibletime:
+            type: integer
+            description: 有责时长（秒）
+          postlinetype:
+            type: string
+            description: 线路类型
+          postlinecode:
+            type: string
+            description: 线路编码
+          fineAmount:
+            type: string
+            description: 罚款金额 元
+          endtime:
+            type: string
+            description: 计划到达时间 datetime
+          starttime:
+            type: string
+            description: 计划发车时间 datetime
+          plandistance:
+            type: string
+            description: 计划总里程 km
+          gpsno:
+            type: string
+            description: 设备号
+          carnum:
+            type: string
+            description: 车牌号
+          truckid:
+            type: string
+            description: 车辆id
+          rundelay:
+            type: integer
+            description: 运行延误 秒
+          runtime:
+            type: integer
+            description: 运行时间 秒
+          carriagetype:
+            type: string
+            description: 运费类型
+          in_haven_time:
+            type: string
+            description: 进始发站时间 datetime
+          orgroot:
+            type: string
+            description: 顶级机构号
+          child:
+            type: array
+            description: 行程单分段信息
+            items:
+              properties:
+                id:
+                  type: string
+                  description: 分段数据id
+                postlinename:
+                  type: string
+                  description: 任务线路
+                postlinecode:
+                  type: string
+                  description: 线路编码
+                starttime:
+                  type: string
+                  description: 计划发车时间 datetime
+                gstarttime:
+                  type: string
+                  description: 实际开始时间 datetime
+                startdelay:
+                  type: integer
+                  description: 发车延误 秒
+                endtime:
+                  type: string
+                  description: 计划到达时间
+                garrivetime:
+                  type: string
+                  description: 实际到达时间 datetime
+                arrivedelay:
+                  type: integer
+                  description: 到达延误 秒
+                plandistance:
+                  type: string
+                  description: 计划总里程 km
+                totaldistance:
+                  type: string
+                  description: 实际总里程 km
+                runtime:
+                  type: integer
+                  description: 运行时间 秒
+                gruntime:
+                  type: integer
+                  description: 实际运行时间 秒
+                rundelay:
+                  type: integer
+                  description: 运行延误 秒
+                events:
+                  type: integer
+                  description: 异常事件数目
+                responsibility:
+                  type: integer
+                  description: 延误有责 0无；1有
+                responsibletime:
+                  type: integer
+                  description: 有责时长 秒
+  getEfficiencyByTask:
+    type: object
+    properties:
+      taskid:
+        type: string
+        description: 任务id，与任务编号必传其一
+      taskcode:
+        type: string
+        description: 任务编号，与任务id必传其一
+  getEfficiencyByTaskResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: object
+        properties:
+          id:
+            type: string
+            description: 任务id
+          taskcode:
+            type: string
+            description: 任务编号
+          orgroot:
+            type: string
+            description: 所属根机构
+          orgcode:
+            type: string
+            description: 所属机构
+          siteinfo:
+            type: array
+            description: 时效数据
+            items:
+              properties:
+                siteid:
+                  type: string
+                  description: 站点id
+                sitecode:
+                  type: string
+                  description: 站点编码
+                sitname:
+                  type: string
+                  description: 站点名
+                pintime:
+                  type: string
+                  description: 计划进场时间 datetime
+                gintime:
+                  type: string
+                  description: 实际进场时间 datetime
+                pouttime:
+                  type: string
+                  description: 计划出发时间 datetime
+                gouttime:
+                  type: string
+                  description: 实际出发时间 datetime
+                runtime:
+                  type: integer
+                  description: 计划运行时长 秒
+                gruntime:
+                  type: integer
+                  description: 实际运行时长 秒
+                staytime:
+                  type: integer
+                  description: 计划站点停留 秒
+                tomile:
+                  type: string
+                  description: 计划里程 km
+                realtomile:
+                  type: string
+                  description: 实际运行里程 km
+                highmile:
+                  type: string
+                  description: 高速行驶里程 km
+  getEfficiencys:
+    type: object
+    properties:
+      updatetimeGe:
+        type: string
+        description: 修改时间大于等于 作为数据同步时的起点
+      updatetimeLt:
+        type: string
+        description: 修改时间小于 作为数据同步时的起点
+      limit:
+        type: integer
+        description: 默认100 最大1000 返回条数
+  getEfficiencysResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: array
+        description: 时效数据
+        items:
+          properties:
+            taskcode:
+              type: string
+              description: 任务编码
+            siteid:
+              type: string
+              description: 站点id
+            sitecode:
+              type: string
+              description: 站点编码
+            sitname:
+              type: string
+              description: 站点名
+            pintime:
+              type: string
+              description: 计划进场时间 datetime
+            gintime:
+              type: string
+              description: 实际进场时间 datetime
+            pouttime:
+              type: string
+              description: 计划出发时间 datetime
+            gouttime:
+              type: string
+              description: 实际出发时间 datetime
+            runtime:
+              type: integer
+              description: 计划运行时长 秒
+            gruntime:
+              type: integer
+              description: 实际运行时长 秒
+            staytime:
+              type: integer
+              description: 计划站点停留 秒
+            tomile:
+              type: string
+              description: 计划里程 km
+            realtomile:
+              type: string
+              description: 实际运行里程 km
+            highmile:
+              type: string
+              description: 高速行驶里程 km
+  getActionByTask:
+    type: object
+    properties:
+      taskid:
+        type: string
+        description: '任务id,必填'
+      tasksubid:
+        type: string
+        description: 任务subid
+  getActionByTaskResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: array
+        items:
+          properties:
+            taskid:
+              type: string
+              description: 任务id
+            tasksubid:
+              type: string
+              description: 子任务id
+            actionid:
+              type: string
+              description: 事件id
+            orgroot:
+              type: string
+              description: 顶级机构
+            orgcode:
+              type: string
+              description: 所属机构
+            event_type:
+              type: string
+              description: 事件类型
+            duration:
+              type: string
+              description: 持续时间 秒
+            carnum:
+              type: string
+              description: 车牌
+            truckid:
+              type: string
+              description: 车辆id
+            driver_name:
+              type: string
+              description: 司机姓名
+            driver_phone:
+              type: string
+              description: 司机电话
+            event_addr:
+              type: string
+              description: 事件地址
+            lng:
+              type: string
+              description: 经度
+            lat:
+              type: string
+              description: 纬度
+            stime:
+              type: integer
+              description: 事件开始时间 11位时间戳
+            etime:
+              type: integer
+              description: 事件结束时间 11位时间戳
+            event_time:
+              type: integer
+              description: 事件产生时间 11位时间戳
+            path_id:
+              type: string
+              description: 标准线路id
+            gpsno:
+              type: integer
+              description: 设备号
+            traffic_jam:
+              type: integer
+              description: 路况，1缓行，2拥堵，4极度拥堵，0未解析路况
+            mile:
+              type: string
+              description: 影响里程，单位米（m）
+  getActions:
+    type: object
+    properties:
+      createtimeGe:
+        type: string
+        description: 创建时间大于等于作为数据同步时的起点与updatetimeGe二选一
+      updatetimeGe:
+        type: string
+        description: 修改时间大于等于作为数据同步时的起点与createtimeGe二选一 这个优先级高一些
+      limit:
+        type: integer
+        description: 默认1000 最大1000 返回条数
+  getActionsResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: array
+        items:
+          properties:
+            taskid:
+              type: string
+              description: 任务id
+            tasksubid:
+              type: string
+              description: 子任务id
+            actionid:
+              type: string
+              description: 事件id
+            orgroot:
+              type: string
+              description: 顶级机构
+            orgcode:
+              type: string
+              description: 所属机构
+            event_type:
+              type: string
+              description: 事件类型
+            duration:
+              type: string
+              description: 持续时间 秒
+            carnum:
+              type: string
+              description: 车牌
+            truckid:
+              type: string
+              description: 车辆id
+            driver_name:
+              type: string
+              description: 司机姓名
+            driver_phone:
+              type: string
+              description: 司机电话
+            event_addr:
+              type: string
+              description: 事件地址
+            lng:
+              type: string
+              description: 经度
+            lat:
+              type: string
+              description: 纬度
+            stime:
+              type: integer
+              description: 事件开始时间 11位时间戳
+            etime:
+              type: integer
+              description: 事件结束时间 11位时间戳
+            event_time:
+              type: integer
+              description: 事件产生时间 11位时间戳
+            path_id:
+              type: string
+              description: 标准线路id
+            gpsno:
+              type: integer
+              description: 设备号
+            traffic_jam:
+              type: integer
+              description: 路况，1缓行，2拥堵，4极度拥堵，0未解析路况
+            mile:
+              type: string
+              description: 影响里程，单位米（m）
+  getActionInfo:
+    type: object
+    properties:
+      actionId:
+        type: integer
+        description: 事件id
+  getActionInfoResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: 错误编码，0、为正常，非0为异常
+      message:
+        type: string
+        description: 错误信息
+      data:
+        type: object
+        properties:
+          taskid:
+            type: string
+            description: 任务id
+          tasksubid:
+            type: string
+            description: 子任务id
+          actionid:
+            type: string
+            description: 事件id
+          orgroot:
+            type: string
+            description: 顶级机构
+          orgcode:
+            type: string
+            description: 所属机构
+          event_type:
+            type: string
+            description: 事件类型
+          duration:
+            type: string
+            description: 持续时间 秒
+          carnum:
+            type: string
+            description: 车牌
+          truckid:
+            type: string
+            description: 车辆id
+          driver_name:
+            type: string
+            description: 司机姓名
+          driver_phone:
+            type: string
+            description: 司机电话
+          event_addr:
+            type: string
+            description: 事件地址
+          lng:
+            type: string
+            description: 经度
+          lat:
+            type: string
+            description: 纬度
+          stime:
+            type: integer
+            description: 事件开始时间 11位时间戳
+          etime:
+            type: integer
+            description: 事件结束时间 11位时间戳
+          event_time:
+            type: integer
+            description: 事件产生时间 11位时间戳
+          path_id:
+            type: string
+            description: 标准线路id
+          gpsno:
+            type: integer
+            description: 设备号
+          traffic_jam:
+            type: integer
+            description: 路况，1缓行，2拥堵，4极度拥堵，0未解析路况
+          is_handle:
+            type: integer
+            description: 是否处理了
+          mile:
+            type: string
+            description: 影响里程，单位米（m）
+          detail:
+            type: array
+            description: 详细处理数据
+            items:
+              properties:
+                htype:
+                  type: integer
+                  description: 处理类型，1处理，2审核，3申诉
+                data:
+                  type: string
+                  description: 处理详情
+                uid:
+                  type: string
+                  description: 处理人id
+                uname:
+                  type: string
+                  description: 处理人名字
+                min:
+                  type: string
+                  description: 免责时长
+                resp:
+                  type: string
+                  description: 是否有责，1无，2部分有责，3全责
+                ctime:
+                  type: integer
+                  description: 记录时间 11位时间戳
+                etime:
+                  type: integer
+                  description: 上报时间 11位时间戳
+          feedback:
+            type: array
+            description: 上报信息
+            items:
+              properties:
+                msg:
+                  type: string
+                  description: 反馈内容
+                photo:
+                  type: string
+                  description: 图片地址 多个逗号隔开
+                vocie:
+                  type: string
+                  description: 语音地址 多个逗号隔开
+                ctime:
+                  type: integer
+                  description: 创建时间 11位时间戳
+                utime:
+                  type: integer
+                  description: 修改时间 11位时间戳

@@ -2,18 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3cda34c7-2c04-46c4-8c2c-6b2a4932fdc0" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/codeStyleSettings.xml" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/php-anthology/oop/php-mysql/Query.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/php-anthology/oop/php-mysql/TableQuery.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/php70/phpinfo.php" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/php70/www" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/php-anthology/kafka/KafkaConsumer-lowlevel.php" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/modern-php" afterPath="$PROJECT_DIR$/modern-php" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-arrays" afterPath="$PROJECT_DIR$/php-arrays" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/xiaomi_mall" afterPath="$PROJECT_DIR$/xiaomi_mall" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/php-study.iml" afterPath="$PROJECT_DIR$/.idea/php-study.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-anthology/oop/php-mysql/ArrayTool.php" afterPath="$PROJECT_DIR$/php-anthology/oop/php-mysql/ArrayTool.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-anthology/oop/php-mysql/SqlString.php" afterPath="$PROJECT_DIR$/php-anthology/oop/php-mysql/SqlString.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-anthology/oop/php-mysql/dbtest.php" afterPath="$PROJECT_DIR$/php-anthology/oop/php-mysql/dbtest.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-anthology/kafka/KafkaProducer.php" afterPath="$PROJECT_DIR$/php-anthology/kafka/KafkaProducer.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-anthology/kafka/kafka-demo.php" afterPath="$PROJECT_DIR$/php-anthology/kafka/kafka-demo.php" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/php-anthology/kafka/kafkaconf.php" afterPath="$PROJECT_DIR$/php-anthology/kafka/kafkaconf.php" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -23,18 +20,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="conf-info.php" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/conf-info.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="16" lean-forward="false" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -94,6 +80,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -101,30 +88,11 @@
               <item name="php-study" type="b2602c69:ProjectViewProjectNode" />
               <item name="php-study" type="2a2b976b:PhpTreeStructureProvider$1" />
             </path>
-            <path>
-              <item name="php-study" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php-study" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="php-anthology" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="php-study" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php-study" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="php-anthology" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="oop" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
-            <path>
-              <item name="php-study" type="b2602c69:ProjectViewProjectNode" />
-              <item name="php-study" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="php-anthology" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="oop" type="2a2b976b:PhpTreeStructureProvider$1" />
-              <item name="file" type="2a2b976b:PhpTreeStructureProvider$1" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scratches" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -156,16 +124,20 @@
       <workItem from="1526455631478" duration="524000" />
       <workItem from="1526462423968" duration="11000" />
       <workItem from="1526462452189" duration="7000" />
+      <workItem from="1526554718815" duration="5000" />
+      <workItem from="1526624442839" duration="16000" />
+      <workItem from="1526819488353" duration="3000" />
+      <workItem from="1526971198449" duration="67000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="542000" />
+    <option name="totallyTimeSpent" value="633000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="260" y="40" width="1920" height="1080" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.15" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -196,24 +168,11 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/conf-info.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/conf-info.php" />
+    <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/conf-info.php" />
     <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/demo.php" />
     <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/demo.php" />
-    <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/conf-info.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="16" lean-forward="false" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/php-anthology/oop/file/conf-info.php" />
   </component>
   <component name="masterDetails">
     <states>
