@@ -4,7 +4,7 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:07:19
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-08 17:11:41
+ * @Last Modified time: 2018-06-10 12:21:59
  */
 
 class FtpManager
@@ -21,7 +21,7 @@ class FtpManager
 
     protected $localStorePath;
 
-    protected $beginTime = 0;
+    protected $startTime = 0;
 
     protected $endTime = 0;
 
@@ -74,7 +74,7 @@ class FtpManager
         if ($this->useMicrotime) {
             $this->startTime = microtime(true);
         } else {
-            $this->starTime = time();
+            $this->startTime = time();
         }
     }
 

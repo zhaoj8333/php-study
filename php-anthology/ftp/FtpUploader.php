@@ -4,7 +4,7 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:07:03
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-08 17:04:42
+ * @Last Modified time: 2018-06-10 12:21:37
  */
 
 require './FtpManager.php';
@@ -72,11 +72,11 @@ class FtpUploader extends FtpManager
         try {
             $this->_pushFile();
 
-            $uploadFile = [
-                'file_name' => $this->remoteFile,
-                'file_size' => ftp_size($this->ftpConn, $this->remoteFile),
-                'file_mtime' => ftp_mdtm($this->ftpConn, $this->remoteFile),
-                'upload_time' => time()
+            $uploadedFile = [
+                'file_name'   => $this->remoteFile,
+                'file_size'   => ftp_size($this->ftpConn, $this->remoteFile),
+                'file_mtime'  => ftp_mdtm($this->ftpConn, $this->remoteFile),
+                'upload_time' => $this->endTime - $this->startTime
             ];
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
@@ -84,7 +84,7 @@ class FtpUploader extends FtpManager
 
         return [
             'result' => 'success',
-            'file' => $uploadFile
+            'file' => $uploadedFile
         ];
     }
 
