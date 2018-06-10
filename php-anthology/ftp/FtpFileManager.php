@@ -4,34 +4,21 @@
  * @Author: zhaojun_cd
  * @Date:   2018-06-07 09:07:19
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-07 09:18:02
+ * @Last Modified time: 2018-06-08 10:15:32
  */
+
+require './FtpManager.php';
 
 class FtpFileManager extends FtpManager
 {
-
 
     private $_handle;
 
     private $_timeConsumed;
 
-    function __construct($conn)
+    function __construct()
     {
-
-    }
-
-
-    /**
-     * [getCurrentDir return current directory]
-     *
-     * @author zhaojun
-     * @datetime 2018-06-05T11:39:22+0800
-     *
-     * @return [string] [directory]
-     */
-    public function getCurrentDir()
-    {
-        return ftp_pwd($this->_resource);
+        parent::__construct();
     }
 
     /**
@@ -48,27 +35,25 @@ class FtpFileManager extends FtpManager
     {
         $return = [];
 
-        $files = ftp_rawlist($this->_resource, $dir);
+        $files = ftp_rawlist($this->ftpConn, $dir);
 
         foreach ($files as $key => $file) {
-            $temp     = explode(' ', $file);
-            $fileType = substr($temp[0], 0, 1);
-
-            $return[$key]['type']  = $fileType;
-            $return[$key]['perm']  = substr($temp[0], 1);
-            $return[$key]['links'] = $temp[4];
-            $return[$key]['owner'] = $temp[5];
-            $return[$key]['group'] = $temp[12];
-
-            if ($fileType == 'd') {
-                $return[$key]['size'] = $temp[24];
-                $return[$key]['name'] = $temp[28];
-                $return[$key]['last_modified'] = $temp[25] . ' ' . $temp[26] . ' ' . $temp[27];
-            } elseif ($fileType == '-') {
-                $return[$key]['size'] = $temp[17];
-                $return[$key]['name'] = $temp[21];
-                $return[$key]['last_modified'] = $temp[18] . ' ' . $temp[19] . ' ' . $temp[20];
+            $temp = explode(' ', $file);
+            foreach ($temp as $k => $v) {
+                if (empty($v)) {
+                    unset($temp[$k]);
+                }
             }
+            $temp = array_values($temp);
+
+            $return[$key]['type']   = substr($temp[0], 0, 1);
+            $return[$key]['perm']   = substr($temp[0], 1);
+            $return[$key]['owner']  = intval($temp[2]);
+            $return[$key]['group']  = $temp[3];
+            $return[$key]['links']  = intval($temp[1]);
+            $return[$key]['size']   = intval($temp[4]);
+            $return[$key]['modify'] = $temp[5] . ' ' . $temp[6] . ' ' . $temp[7];
+            $return[$key]['name']   = $temp[8];
         }
 
         return $return;
@@ -86,7 +71,11 @@ class FtpFileManager extends FtpManager
      */
     public function getFileNames($dir = '/')
     {
-        return ftp_nlist($dir);
+        return ftp_nlist($this->ftpConn, $dir);
     }
 
 }
+
+$ftp = new FtpFileManager();
+
+var_dump($ftp);

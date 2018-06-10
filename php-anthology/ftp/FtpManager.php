@@ -4,13 +4,11 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:07:19
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-07 15:55:57
+ * @Last Modified time: 2018-06-08 17:11:41
  */
 
 class FtpManager
 {
-    const FILE_READ_SIZE = 20;  // MB
-
     protected $ftpConn;
 
     protected $handle;
@@ -20,6 +18,30 @@ class FtpManager
     protected $remoteFile;
 
     protected $localFile;
+
+    protected $localStorePath;
+
+    protected $beginTime = 0;
+
+    protected $endTime = 0;
+
+    protected $useMicrotime = true;
+
+    protected $fileExceptions = [
+        100 => "file or directory: msg does not exist !",
+        101 => "file or directory: msg is not readable !",
+        102 => "file or directory: msg is not writable !",
+        103 => "file or directory: there is a same file under the directory !",
+
+        200 => "please specify the local storage path first !",
+        201 => "generate target file faild",
+        300 => "no opened file to lock",
+        301 => "file or directory: msg is used by other program !",
+
+        400 => "download file: msg faild",
+
+        500 => "upload file: msg failed",
+    ];
 
     /**
      * [__construct initialize this class]
@@ -40,6 +62,65 @@ class FtpManager
     }
 
     /**
+     * [beforeOperate record the download or upload starttime]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-08T14:12:46+0800
+     *
+     * @return [void]
+     */
+    protected function beforeOperate()
+    {
+        if ($this->useMicrotime) {
+            $this->startTime = microtime(true);
+        } else {
+            $this->starTime = time();
+        }
+    }
+
+    /**
+     * [afterOperate record the download or upload endtime]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-08T14:12:46+0800
+     *
+     * @return [void]
+     */
+    protected function afterOperate()
+    {
+        if ($this->useMicrotime) {
+            $this->endTime = microtime(true);
+        } else {
+            $this->endTime = time();
+        }
+    }
+
+    /**
+     * [buildFileException build exceptions when openrating files]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-08T11:11:57+0800
+     *
+     * @throws [Exception]
+     *
+     * @param [string] $message [specified information]
+     * @param [string] $code    [code you specified]
+     *
+     * @return [void]
+     */
+    protected function buildFileException($message = '', $code)
+    {
+        throw new Exception(
+            str_replace(
+                'msg',
+                $message,
+                $this->fileExceptions[$code]
+            ),
+            $code
+        );
+    }
+
+    /**
      * [setLocalFile set $localFile member variable]
      *
      * @author zhaojun
@@ -49,14 +130,49 @@ class FtpManager
      *
      * @param [string] $filePath [file path]
      *
-     * @return   [return]
+     * @return [return]
      */
     public function setLocalFile($filePath)
     {
         if (!is_file($filePath)) {
-            throw new Exception('file :' . $filePath . ' does not exist');
+            $this->buildFileException($filePath, 100);
         }
+
         $this->localFile = $filePath;
+    }
+
+    /**
+     * [setLocalStoragePath set local storage path]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-08T10:35:02+0800
+     *
+     * @throws [Exception]
+     *
+     * @param [string] $path [path specified by user]
+     *
+     * @return void
+     */
+    public function setLocalStoragePath($path)
+    {
+        $storageName = '';
+
+        if (is_dir($path)) {
+            $storageName = $path . '/' . md5($this->remoteFile)
+                         . '-' . $this->remoteFile;
+        } else {
+            if (is_file($path)) {
+                $this->buildFileException('', 103);
+            }
+            $storageName = $path;
+        }
+
+        $dirname = dirname($storageName);
+        if (!is_writable($dirname)) {
+            $this->buildFileException($dirname, 102);
+        }
+
+        $this->localStorePath = &$storageName;
     }
 
     /**
@@ -101,59 +217,6 @@ class FtpManager
     }
 
     /**
-     * [getFilesDetail get files in specifield directory]
-     *
-     * @author zhaojun
-     * @datetime 2018-06-05T11:41:43+0800
-     *
-     * @param string $dir [directory]
-     *
-     * @return [array] [list of files]
-     */
-    public function getFilesDetail($dir = '/')
-    {
-        $return = [];
-
-        $files = ftp_rawlist($this->ftpConn, $dir);
-
-        foreach ($files as $key => $file) {
-            $temp = explode(' ', $file);
-            foreach ($temp as $k => $v) {
-                if (empty($v)) {
-                    unset($temp[$k]);
-                }
-            }
-            $temp = array_values($temp);
-
-            $return[$key]['type']   = substr($temp[0], 0, 1);
-            $return[$key]['perm']   = substr($temp[0], 1);
-            $return[$key]['owner']  = intval($temp[2]);
-            $return[$key]['group']  = $temp[3];
-            $return[$key]['links']  = intval($temp[1]);
-            $return[$key]['size']   = intval($temp[4]);
-            $return[$key]['modify'] = $temp[5] . ' ' . $temp[6] . ' ' . $temp[7];
-            $return[$key]['name']   = $temp[8];
-        }
-
-        return $return;
-    }
-
-    /**
-     * [getFileNames get file names of specified dir]
-     *
-     * @author zhaojun
-     * @datetime 2018-06-06T15:22:25+0800
-     *
-     * @param string $dir [the directory you want to read]
-     *
-     * @return [array] [file names of $dir]
-     */
-    public function getFileNames($dir = '/')
-    {
-        return ftp_nlist($this->ftpConn, $dir);
-    }
-
-    /**
      * [openFile open local file]
      *
      * @author zhaojun
@@ -168,10 +231,33 @@ class FtpManager
     public function openFile($mode)
     {
         $fileMode = '';
+
         if (!stripos($mode, 'b')) {
-            $fileMode .= 'b';
+            $fileMode .= $mode . 'b';
         }
         $this->handle = fopen($this->localFile, $mode . 'b');
+    }
+
+    /**
+     * [lockFileExclusively lock opened file]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-07T15:27:35+0800
+     *
+     * @throws [Exception]
+     *
+     * @return [void]
+     */
+    public function lockFileExclusively()
+    {
+        if (!$this->handle) {
+            $this->buildFileException('', 300);
+        }
+
+        $exLock = flock($this->handle, LOCK_EX);
+        if (!$exLock) {
+            $this->buildFileException($this->localFile, 301);
+        }
     }
 
     /**
@@ -187,9 +273,26 @@ class FtpManager
     public function lockFile()
     {
         if (!$this->handle) {
-            throw new Exception('no opened file to lock');
+            $this->buildFileException('', 300);
         }
-        flock($this->handle, LOCK_EX);
+
+        $exLock = flock($this->handle, LOCK_SH);
+        if (!$exLock) {
+            $this->buildFileException($this->localFile, 301);
+        }
+    }
+
+    /**
+     * [unlockFile unlock the locked file]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-08T10:16:21+0800
+     *
+     * @return [void]
+     */
+    public function unlockFile()
+    {
+        flock($this->handle, LOCK_UN);
     }
 
     /**
@@ -205,7 +308,7 @@ class FtpManager
     public function closeFile()
     {
         if (!$this->handle) {
-            throw new Exception('no opened file!');
+            $this->buildFileException('', 300);
         }
         fclose($this->handle);
     }
@@ -223,14 +326,6 @@ class FtpManager
      */
     public function __destruct()
     {
-        flock($this->handle, LOCK_UN);
         ftp_close($this->ftpConn);
     }
 }
-
-$ftp = new FtpManager();
-$ftp->setLocalFile('/home/zhaojun/dumps/MySQL.txt');
-$ftp->openFile('r');
-$ftp->lockFile();
-
-

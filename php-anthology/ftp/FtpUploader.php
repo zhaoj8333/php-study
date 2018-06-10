@@ -4,22 +4,54 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:07:03
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-07 15:19:31
+ * @Last Modified time: 2018-06-08 17:04:42
  */
+
+require './FtpManager.php';
 
 class FtpUploader extends FtpManager
 {
+    private $_localFileSize = 0;
 
     function __construct($remoteFile, $localFile)
     {
         parent::__construct();
-        if (!is_file($localFile)) {
-            throw new Exception('the file you want to upload does not exist!');
-        }
-        if (!is_readable($localFile)) {
-            throw new Exception('can not read the file you want to upload!');
-        }
 
+        $this->setLocalFile($localFile);
+        $this->_localFileSize = filesize($this->localFile);
+        $this->setRemoteFile($remoteFile);
+    }
+
+    /**
+     * [_pushFile push local file to ftp-server]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-08T17:00:20+0800
+     *
+     * @throws [Exception]
+     *
+     * @return [void]
+     */
+    private function _pushFile()
+    {
+        $this->openFile('r');
+        $this->lockFile();
+        $this->beforeOperate();
+
+        $result = ftp_fput(
+            $this->ftpConn,
+            $this->remoteFile,
+            $this->handle,
+            FTP_BINARY
+        );
+
+        $this->afterOperate();
+        $this->unlockFile();
+        $this->closeFile();
+
+        if (!$result) {
+            $this->buildFileException($this->localFile, 500);
+        }
     }
 
     /**
@@ -37,28 +69,29 @@ class FtpUploader extends FtpManager
      */
     public function uploadFile()
     {
-        $uploadedFile = [];
         try {
+            $this->_pushFile();
 
-            $this->handle = fopen($localFile, 'r');
-            $startTime = microtime(true);
-            $result = ftp_fput($this->ftpConn, $remoteFile, $this->handle, FTP_BINARY);
-            $this->timeConsumed = microtime(true) - $startTime;
-            if (!$result) {
-                throw new Exception('upload file to ftp failed');
-            }
-
-            $uploadFile['file_name']   = $remoteFile;
-            $uploadFile['file_size']   = ftp_size($this->ftpConn, $remoteFile);
-            $uploadFile['file_mtime']  = ftp_mdtm($this->ftpConn, $remoteFile);
-            $uploadFile['upload_time'] = $this->timeConsumed;
-
-            fclose($this->handle);
+            $uploadFile = [
+                'file_name' => $this->remoteFile,
+                'file_size' => ftp_size($this->ftpConn, $this->remoteFile),
+                'file_mtime' => ftp_mdtm($this->ftpConn, $this->remoteFile),
+                'upload_time' => time()
+            ];
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
 
-        return $uploadFile;
+        return [
+            'result' => 'success',
+            'file' => $uploadFile
+        ];
     }
 
 }
+
+$ftpUpload = new FtpUploader('/streamreactor.pdf', '/home/zhaojun/dumps/streamreactor.pdf');
+
+$res = $ftpUpload->uploadFile();
+
+var_dump($res);
