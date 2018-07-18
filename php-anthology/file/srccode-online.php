@@ -5,5 +5,5 @@
 
 
 $srcCode = file_get_contents('/home/zhaojun/www/php-study/composer/vendor/gitonomy/gitlib/src/Gitonomy/Git/Blame.php');
-// echo $srcCode;
-// highlight_string($srcCode);
+echo $srcCode;
+highlight_string($srcCode);

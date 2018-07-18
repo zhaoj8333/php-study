@@ -159,6 +159,18 @@ class MySqliConnector
         }
     }
 
+    public function getCurrConnection()
+    {
+        return [
+            'host'    => $this->_dbHost,
+            'user'    => $this->_dbUser,
+            'pwd'     => $this->_dbPwd,
+            'dbname'  => $this->_dbName,
+            'dbport'  => $this->_dbPort,
+            'charset' => $this->_dbCharset,
+        ];
+    }
+
     /**
      * [getDbException 抛出数据库异常信息]
      *

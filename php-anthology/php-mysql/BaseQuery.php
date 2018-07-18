@@ -14,9 +14,10 @@ class BaseQuery
      *
      * @param [void] $dbKey [void]
      */
-    function __construct($dbKey)
+    public function __construct($dbKey)
     {
         include 'MySqliConnector.php';
+
         $mysqliObj = MySqliConnector::getInstance($dbKey);
 
         $this->mysqli = $mysqliObj->mysqli;
@@ -35,6 +36,7 @@ class BaseQuery
         $resultSets = [];
 
         $result = $this->mysqli->query($sql);
+
         $this->_lastSql = $sql;
 
         if ($result->num_rows == 0) {
@@ -44,6 +46,20 @@ class BaseQuery
             $resultSets[] = $assoc;
         }
         return $resultSets;
+    }
+
+    /**
+     * [exec 执行一次]
+     *
+     * @param [string] $sql [sql]
+     *
+     * @return [array] [结果集]
+     */
+    public function exec($sql)
+    {
+        $resultSets = [];
+
+        return $this->mysqli->query($sql);
     }
 
     /**

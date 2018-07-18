@@ -4,7 +4,7 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:07:19
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-10 12:21:59
+ * @Last Modified time: 2018-06-12 09:38:27
  */
 
 class FtpManager
@@ -17,7 +17,11 @@ class FtpManager
 
     protected $remoteFile;
 
-    protected $localFile;
+    protected $localPath;
+
+    protected $localPathType;
+
+    protected $localPathSize = 0;
 
     protected $localStorePath;
 
@@ -121,7 +125,7 @@ class FtpManager
     }
 
     /**
-     * [setLocalFile set $localFile member variable]
+     * [setLocalPath set $localPath member variable]
      *
      * @author zhaojun
      * @datetime 2018-06-07T15:35:05+0800
@@ -132,13 +136,22 @@ class FtpManager
      *
      * @return [return]
      */
-    public function setLocalFile($filePath)
+    protected function setLocalPath($filePath)
     {
-        if (!is_file($filePath)) {
+        if (!file_exists($filePath)) {
             $this->buildFileException($filePath, 100);
         }
+        $this->localPathType = filetype($filePath);
+        $this->localPath = $filePath;
+    }
 
-        $this->localFile = $filePath;
+    protected function getLocalPathSize()
+    {
+        require 'PathReader.php';
+
+        $reader = PathReader::init('/home/zhaojun/www/php-study/php-anthology/file/tests/resources');
+// var_dump($reader);
+        die;
     }
 
     /**
@@ -153,7 +166,7 @@ class FtpManager
      *
      * @return void
      */
-    public function setLocalStoragePath($path)
+    protected function setLocalStoragePath($path)
     {
         $storageName = '';
 
@@ -176,16 +189,16 @@ class FtpManager
     }
 
     /**
-     * [getLocalFile return the member variable $localFile]
+     * [getLocalPath return the member variable $localPath]
      *
      * @author zhaojun
      * @datetime 2018-06-07T15:36:24+0800
      *
      * @return [string] [file path]
      */
-    public function getLocalFile()
+    protected function getLocalPath()
     {
-        return $this->localFile;
+        return $this->localPath;
     }
 
     /**
@@ -198,7 +211,7 @@ class FtpManager
      *
      * @return [void]
      */
-    public function setRemoteFile($remoteFile)
+    protected function setRemoteFile($remoteFile)
     {
         $this->remoteFile = $remoteFile;
     }
@@ -211,7 +224,7 @@ class FtpManager
      *
      * @return [string] [directory]
      */
-    public function getCurrentDir()
+    protected function getCurrentDir()
     {
         return ftp_pwd($this->ftpConn);
     }
@@ -228,14 +241,14 @@ class FtpManager
      *
      * @return [void]
      */
-    public function openFile($mode)
+    protected function openFile($mode)
     {
         $fileMode = '';
 
         if (!stripos($mode, 'b')) {
             $fileMode .= $mode . 'b';
         }
-        $this->handle = fopen($this->localFile, $mode . 'b');
+        $this->handle = fopen($this->localPath, $mode . 'b');
     }
 
     /**
@@ -248,7 +261,7 @@ class FtpManager
      *
      * @return [void]
      */
-    public function lockFileExclusively()
+    protected function lockFileExclusively()
     {
         if (!$this->handle) {
             $this->buildFileException('', 300);
@@ -256,7 +269,7 @@ class FtpManager
 
         $exLock = flock($this->handle, LOCK_EX);
         if (!$exLock) {
-            $this->buildFileException($this->localFile, 301);
+            $this->buildFileException($this->localPath, 301);
         }
     }
 
@@ -270,7 +283,7 @@ class FtpManager
      *
      * @return [void]
      */
-    public function lockFile()
+    protected function lockFile()
     {
         if (!$this->handle) {
             $this->buildFileException('', 300);
@@ -278,7 +291,7 @@ class FtpManager
 
         $exLock = flock($this->handle, LOCK_SH);
         if (!$exLock) {
-            $this->buildFileException($this->localFile, 301);
+            $this->buildFileException($this->localPath, 301);
         }
     }
 
@@ -290,7 +303,7 @@ class FtpManager
      *
      * @return [void]
      */
-    public function unlockFile()
+    protected function unlockFile()
     {
         flock($this->handle, LOCK_UN);
     }
@@ -305,7 +318,7 @@ class FtpManager
      *
      * @return [void]
      */
-    public function closeFile()
+    protected function closeFile()
     {
         if (!$this->handle) {
             $this->buildFileException('', 300);
@@ -326,6 +339,6 @@ class FtpManager
      */
     public function __destruct()
     {
-        ftp_close($this->ftpConn);
+        // ftp_close($this->ftpConn);
     }
 }

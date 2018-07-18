@@ -2,7 +2,7 @@
 
 class Glob
 {
-    public static function listDir($dirPath,  $flag = GLOB_MARK)
+    public static function listDir($dirPath, $flag = GLOB_MARK)
     {
         if (!is_dir($dirPath)) {
             throw new Exception('Directory: ' . $dirPath . ' is not a valid path!');

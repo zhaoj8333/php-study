@@ -4,22 +4,34 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:07:03
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-10 12:21:37
+ * @Last Modified time: 2018-06-10 12:50:14
  */
 
 require './FtpManager.php';
 
 class FtpUploader extends FtpManager
 {
-    private $_localFileSize = 0;
 
-    function __construct($remoteFile, $localFile)
+    /**
+     * [__construct initialize this class]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-10T12:46:39+0800
+     *
+     * @throws [Exception]
+     *
+     * @param [string] $remotePath [path of ftp-server]
+     * @param [string] $localPath  [path of local]
+     *
+     *
+     */
+    public function __construct($remotePath, $localPath)
     {
         parent::__construct();
 
-        $this->setLocalFile($localFile);
-        $this->_localFileSize = filesize($this->localFile);
-        $this->setRemoteFile($remoteFile);
+        $this->setLocalPath($localPath);
+        $this->getLocalPathSize();
+        $this->setRemoteFile($remotePath);
     }
 
     /**
@@ -40,7 +52,7 @@ class FtpUploader extends FtpManager
 
         $result = ftp_fput(
             $this->ftpConn,
-            $this->remoteFile,
+            $this->remotePath,
             $this->handle,
             FTP_BINARY
         );
@@ -50,7 +62,7 @@ class FtpUploader extends FtpManager
         $this->closeFile();
 
         if (!$result) {
-            $this->buildFileException($this->localFile, 500);
+            $this->buildFileException($this->localPath, 500);
         }
     }
 
@@ -62,8 +74,8 @@ class FtpUploader extends FtpManager
      *
      * @throws [\Exception]
      *
-     * @param [string] $remoteFile [remote path you want to upload]
-     * @param [string] $localFile  [local file path]
+     * @param [string] $remotePath [remote path you want to upload]
+     * @param [string] $localPath  [local file path]
      *
      * @return [array] [file info of the uploaded file]
      */
@@ -73,9 +85,9 @@ class FtpUploader extends FtpManager
             $this->_pushFile();
 
             $uploadedFile = [
-                'file_name'   => $this->remoteFile,
-                'file_size'   => ftp_size($this->ftpConn, $this->remoteFile),
-                'file_mtime'  => ftp_mdtm($this->ftpConn, $this->remoteFile),
+                'file_name'   => $this->remotePath,
+                'file_size'   => ftp_size($this->ftpConn, $this->remotePath),
+                'file_mtime'  => ftp_mdtm($this->ftpConn, $this->remotePath),
                 'upload_time' => $this->endTime - $this->startTime
             ];
         } catch (Exception $e) {
@@ -88,9 +100,42 @@ class FtpUploader extends FtpManager
         ];
     }
 
+    /**
+     * [_pushDirectory push directory to ftp-server]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-10T12:37:32+0800
+     *
+     * @throws [Exception]
+     *
+     * @return [void]
+     */
+    private function _pushDirectory()
+    {
+
+    }
+
+    /**
+     * [uploadDirectory upload a directory and files, directories underneath it]
+     *
+     * @author zhaojun
+     * @datetime 2018-06-10T12:34:58+0800
+     *
+     * @throws [Exception]
+     *
+     * @return [array] [file info of the uploaded directory in a directory tree hierarchy]
+     */
+    public function uploadDirectory()
+    {
+
+    }
+
 }
 
-$ftpUpload = new FtpUploader('/streamreactor.pdf', '/home/zhaojun/dumps/streamreactor.pdf');
+$dir = '/home/zhaojun/www/php-study/php-anthology/file/tests/resources/68731.gif';
+$file = '68731.gif';
+
+$ftpUpload = new FtpUploader('dir-test-1', $dir);
 
 $res = $ftpUpload->uploadFile();
 

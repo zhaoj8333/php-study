@@ -4,7 +4,7 @@
  * @Author: zhaojun
  * @Date:   2018-06-07 09:06:53
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-06-08 17:03:10
+ * @Last Modified time: 2018-06-10 12:41:42
  */
 
 require './FtpManager.php';
@@ -99,11 +99,11 @@ class FtpDownloader extends FtpManager
     {
         try {
             $this->setDownloadTarget();
-            $this->setLocalFile($this->localStorePath);
+            $this->setLocalPath($this->localStorePath);
 
             $this->_getFtpFile();
 
-            $this->setLocalFile($this->localStorePath);
+            $this->setLocalPath($this->localStorePath);
         } catch (Exception $e) {
             throw new Exception($e->getMessage(), $e->getCode());
         }
@@ -126,7 +126,7 @@ class FtpDownloader extends FtpManager
     }
 }
 
-$download = new FtpDownloader('test.bak', '/home/zhaojun/dumps/test.bak.download');
+$download = new FtpDownloader('/test/', '/home/zhaojun/dumps/test/');
 $res = $download->downloadFile();
 
 var_dump($res);
