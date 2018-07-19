@@ -22,6 +22,8 @@ class BaseQuery
 
         $this->mysqli = $mysqliObj->mysqli;
         $this->conn   = $mysqliObj->mysqliConn;
+
+        $this->initialize();
     }
 
     /**
