@@ -4,11 +4,15 @@
  * @Author: zhaojun_cd
  * @Date:   2018-07-18 17:07:54
  * @Last Modified by:   zhaojun_cd
- * @Last Modified time: 2018-07-19 18:33:43
+ * @Last Modified time: 2018-07-23 14:10:22
  */
 
 trait BatchInsert
 {
+    protected $beginExec  = 0.00;
+    protected $endExec    = 0.00;
+    protected $execResult = false;
+
     public function batchInsert(array $data = [], $tableName = '', $pk = 'id')
     {
         if (!$data || !$tableName) {
@@ -21,15 +25,16 @@ trait BatchInsert
             array_push($columns, $pk);
         }
         $batchInsertSql .= "(`" . implode('`, `', $columns) . "`) VALUES ";
+
         foreach ($data as $key => $keyVal) {
             $batchInsertSql .= "(";
             $tmp = "";
             foreach ($keyVal as $k => $v) {
                 if ($v === null) {
-                    $tmp .= 'NULL, ';
+                    $tmp .= "NULL, ";
                 } else {
                     if (is_string($v)) {
-                        $tmp .= "'" . $v . "', ";
+                        $tmp .= "'" . addslashes($v) . "', ";
                     } else {
                         $tmp .= $v . ", ";
                     }
@@ -40,9 +45,16 @@ trait BatchInsert
         }
 
         $batchInsertSql = substr($batchInsertSql, 0, strlen($batchInsertSql) - 2);
+        if (self::DEBUG) {
+            // echo $batchInsertSql, "\n";
+        }
+        $this->beginExec = microtime(true);
+        $res = $this->exec($batchInsertSql);
+        $this->endExec   = microtime(true);
 
-        var_dump($batchInsertSql)   ;
+        return [
+            'sql' => $batchInsertSql,
+            'res' => $res,
+        ];
     }
-
-
 }

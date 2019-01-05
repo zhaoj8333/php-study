@@ -20,7 +20,6 @@ for ($i = 0; $i < 5; $i++) {
     // $values = $faker->companyIdNumber();
     // $values = $faker->bankAccountNumber();
     $values = $faker->vat;
-
 }
 
 var_dump($values);

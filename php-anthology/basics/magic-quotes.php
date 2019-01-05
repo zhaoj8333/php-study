@@ -15,10 +15,18 @@
 // 一切的编程都需要在magic_quotes_gpc=Off下进行了。在这样的环境下如果不对用户的数据进行转义，
 // 后果不仅仅是程序错误而已了。同样的会引起数据库被注入攻击的危险。
 
-$_POST['name'] = "o'reilly";
+// var_dump(ini_get('register_globals'));
+
+// var_dump(ini_get('magic_quotes_gpc'));
+
+$_GET['name'] = "o'reilly";
+$_GET['address'] = "o'reilly'chengdu";
+
+// var_dump(get_magic_quotes_gpc());
 
 if (!get_magic_quotes_gpc()) {
-    $_POST = array_map('addslashes', $_POST);
+    $get = array_map('addslashes', $_GET);
+
 }
 
-var_dump($_POST);
+var_dump($get);

@@ -6,7 +6,7 @@ return
         'host' => '172.17.0.2',
         'user' => 'zhaojun',
         'pwd'  => 'test',
-        'dbname' => 'g7tv_test'
+        'dbname' => 'sakila'
     ],
     // 'db2' => [
     //     'host' => '172.16.1.22',
