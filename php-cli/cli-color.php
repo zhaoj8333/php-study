@@ -109,6 +109,5 @@ class CliColor
     }
 }
 
-// $cliColor = new CliColor();
-
-// echo CliColor::getDebugLevelString('debug', 'jinggao warning');
+$cliColor = new CliColor();
+echo CliColor::getDebugLevelString('error', 'jinggao warning');
