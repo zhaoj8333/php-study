@@ -16,3 +16,4 @@
 /php70/src/*
 /php72/src/*
 */tests/*
+/php-mongo/*
