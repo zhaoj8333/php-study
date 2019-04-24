@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script>
+     // console.log(top.location);
+     // console.log(location);
+     // console.log(self.location);
+     if ( top.location != location ) {
+          top.location = self.location;
+     }
+</script>
+<head>
+<title>点击劫持</title>
+<style>
+     html,body,iframe{
+         display: block;
+          height: 100%;
+          width: 100%;
+          margin: 0;
+          padding: 0;
+          border:none;
+     }
+     iframe{
+          opacity:0.3;
+          filter:alpha(opacity=0);
+          position:absolute;
+          z-index:2;
+     }
+     button{
+          position:absolute;
+          top: 355px;
+          left: 462px;
+          z-index: 1;
+          width: 72px;
+          height: 26px;
+     }
+</style>
+</head>
+     <body>
+          那些不能说的秘密
+          <!-- <button>查看详情</button> -->
+          <!-- <iframe src="http://tieba.baidu.com/f?kw=%C3%C0%C5%AE"></iframe> -->
+          <iframe src="  ../img-overlay/test01.html"  width="200" height="200">
+          <!-- <iframe src=""  width="200" height="200"> -->
+               <!DOCTYPE html>
+               <html>
+               <head>
+                    <meta charset="utf-8">
+                    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+                    <title>嵌入iframe</title>
+                    <link rel="stylesheet" href="">
+               </head>
+               <body>
+                    嵌入iframe
+               </body>
+               </html>
+          </iframe>
+     </body>
+</html>
