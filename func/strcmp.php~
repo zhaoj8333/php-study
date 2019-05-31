@@ -1,0 +1,8 @@
+<?php
+
+// var_dump(strcmp('a', 'abb'));
+// var_dump(strcmp('aaa', 'aaa'));
+
+// var_dump(strcmp("Hello, world", "Hello"));
+
+var_dump(strcmp("Hella","HellS"));

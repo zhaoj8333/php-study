@@ -14,12 +14,15 @@ $arr = [
 header('Content-type:application/json');
 
 
-if (isset($_GET['callback'])) {
-    $res = json_encode($arr);
+// if (isset($_GET['callback'])) {
+//     $res = json_encode($arr);
 
-    $res = $_GET['callback'] . "($res)";
-    echo $res;
-    // var_dump($res);die;
-    // echo '{\'' . $_GET['callback'] . '\':' . json_encode($arr) . '}';
-}
-//
+//     $res = $_GET['callback'] . "($res)";
+//     echo $res;
+//     // var_dump($res);die;
+//     // echo '{\'' . $_GET['callback'] . '\':' . json_encode($arr) . '}';
+// }
+// //
+
+//  dom xss
+
