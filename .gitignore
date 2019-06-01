@@ -1,9 +1,9 @@
-/composer-test/*
-/composer/*
-/vendor/*
-/xiaomi_mall/*
-/yii2-basic-test/*
-/laravel/*
+*/composer-test/*
+*/composer/*
+*/vendor/*
+*/xiaomi_mall/*
+*/yii2-basic-test/*
+*/laravel/*
 *.log
 *.jpeg
 *.png
