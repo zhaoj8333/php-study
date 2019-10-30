@@ -1,0 +1,3 @@
+<?php
+
+end('normally end');

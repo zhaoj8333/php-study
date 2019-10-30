@@ -1,0 +1,18 @@
+{
+	"folders":
+	[
+		{
+            "follow_symlinks": true,
+			"path": "."
+		}
+	],
+    "settings": {
+        "xdebug": {
+            "url": "www.php-study.com/",
+            // "path_mapping": {},
+            "super_globals": true,
+            "close_on_stop": true,
+            "port": 9001
+        }
+    }
+}

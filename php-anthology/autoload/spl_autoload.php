@@ -8,3 +8,6 @@ class ClassLoader
         # code...
     }
 }
+
+var_dump(new ClassLoader());
+// spl_autoload_register();
