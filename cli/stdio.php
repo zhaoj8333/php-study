@@ -25,5 +25,21 @@
 /* fscanf(STDIN, "%d\n", $number); */
 /* var_dump($number); */
 
-$stdout = fopen('php://stdout', 'w');
+// $stdout = fopen('php://stdout', 'w');
+
+/* echo "site name ? "; */
+/* $name = fgets(STDIN); */
+/* echo sprintf("site name: %s\n", $name); */
+
+/* $stdin = fopen('php://stdin', 'r'); */
+/* echo 'site name?'; */
+/* $site = fread($stdin, 128); */
+/* echo sprintf("site name: %s\n", $site); */
+/* fclose($stdin); */
+
+/* fwrite(STDOUT, 'php stdout'); */
+/* $stdout = fopen('php://stdout', 'w'); */
+/* fwrite($stdout, 'stdout of php'); */
+/* fclose($stdout); */
+
 
